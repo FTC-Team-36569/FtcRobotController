@@ -50,9 +50,13 @@ public class PedroTeleOp extends OpMode {
                 follower.pose().heading(),
                 -FORWARD
         );
+        if (gamepad1.left_bumper) {
+            telemetry.addData("left button","pressed");
 
-        windmill.setPower(gamepad1.right_bumper ? -1.0 : 0.0);
-        intake.setPower(gamepad1.right_bumper ? -1.0 : 1.0);
+        }
+        telemetry.addData("right button",gamepad1.right_trigger);
+        windmill.setPower(gamepad1.right_trigger>0.5 ? -1.0 : 0.0);
+        intake.setPower(gamepad1.left_bumper ? 1.0 : -1.0);
 
         if (gamepad1.options) {
             follower.setPose(follower.pose().withHeading(0));
@@ -76,7 +80,7 @@ public class PedroTeleOp extends OpMode {
 
     @Override
     public void start() {
-        //this tells it what to do once the start butten is pressed
+        //this tells it what to do once the start button is pressed
         follower.setPose(OpModeStorage.autonomousEndPose);
         follower.update();
         shooter.spinUp();
