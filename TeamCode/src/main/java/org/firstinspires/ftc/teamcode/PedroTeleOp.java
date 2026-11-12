@@ -94,7 +94,7 @@ public class PedroTeleOp extends OpMode {
                 double distance = target.ftcPose.range;
                 turn = Range.clip(aimError * TURN_GAIN, -MAX_AIM_TURN, MAX_AIM_TURN);
                 if (turn < 0 && turn > -0.1) {
-                    turn = 0.1;
+                    turn = -0.1;
                 }
                 if (turn < 0.1 && turn > 0) {
                     turn = 0.1;
