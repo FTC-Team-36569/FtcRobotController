@@ -113,14 +113,12 @@ public class PedroTeleOp extends OpMode {
         }
         telemetry.addData("right button",gamepad1.right_trigger);
         windmill.setPower((standardShoot || readyToShoot) ? -1.0 : 0.0);
-        intake.setPower(gamepad1.left_bumper ? 1.0 : -1.0);
+        intake.setPower(gamepad1.left_bumper ? -1.0 : 1.0);
 
         if (gamepad1.options) {
             follower.setPose(follower.pose().withHeading(0));
         }
-
-        //this set power to the intakes
-        intake.setPower(1.0);
+        // This sets the power to the intakes
         intakeServoLeft.setPower(1.0);
         intakeServoRight.setPower(-1.0);
 
