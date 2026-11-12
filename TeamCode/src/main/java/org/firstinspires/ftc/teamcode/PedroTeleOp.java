@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.Shooter;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 import org.firstinspires.ftc.teamcode.pedro.OpModeStorage;
 import org.firstinspires.ftc.vision.apriltag.AprilTagClusterDetection;
-// callum comment to test commit and push
+
 @TeleOp(name = "Pedro TeleOp")
 public class PedroTeleOp extends OpMode {
 
