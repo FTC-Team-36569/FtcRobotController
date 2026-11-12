@@ -124,8 +124,7 @@ public class PedroTeleOp extends OpMode {
         if (gamepad1.options) {
             follower.setPose(follower.pose().withHeading(0));
         }
-
-        //this set power to the intakes
+        // This sets the power to the intakes
         intakeServoLeft.setPower(1.0);
         intakeServoRight.setPower(-1.0);
 
