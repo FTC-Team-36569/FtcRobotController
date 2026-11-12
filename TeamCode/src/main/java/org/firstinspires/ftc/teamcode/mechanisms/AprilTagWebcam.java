@@ -25,6 +25,16 @@ public class AprilTagWebcam {
 
     private Telemetry telemetry;
 
+
+    // DECIMATION: how much the picture is shrunk before looking for tags.
+// Smaller number = sees tags from farther away, but fewer pictures per second (FPS).
+// About how far it can see our 3.25" HIVE tags (straight on, less at an angle):
+//   3 = about 6.5 feet, 30 FPS  (SDK default - lost tags at about 70")
+//   2 = about 9.5 feet, 22 FPS
+//   1 = about 16 feet,  10 FPS
+    public static float DECIMATION = 2;
+
+
     public void init(HardwareMap hwmap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
@@ -34,6 +44,7 @@ public class AprilTagWebcam {
                 .setDrawAxes(true)
                 .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES)
                 .build();
+        aprilTagProcessor.setDecimation(DECIMATION);
 
         VisionPortal.Builder builder = new VisionPortal.Builder();
         builder.setCamera(hwmap.get(WebcamName.class, "Webcam 1"));
@@ -94,6 +105,28 @@ public class AprilTagWebcam {
 //            }
         }
         return null;
+    }
+
+    public AprilTagClusterDetection getClosestCluster (String color) {
+        AprilTagClusterDetection closest = null;
+
+        for (AprilTagDetection detection : detectedTags) {
+            if (!(detection instanceof  AprilTagClusterDetection)){
+                continue;
+            }
+
+            AprilTagClusterDetection cluster = (AprilTagClusterDetection) detection;
+
+            if (cluster.ftcPose == null || !cluster.metadata.name.startsWith(color)) {
+                continue;
+            }
+
+            if (closest == null || cluster.ftcPose.range < closest.ftcPose.range) {
+                closest = cluster;
+            }
+
+        }
+        return closest;
     }
 
     public void stop(){

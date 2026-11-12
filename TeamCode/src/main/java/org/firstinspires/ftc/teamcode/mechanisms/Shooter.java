@@ -12,11 +12,16 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Shooter {
 
+    public static final double MIN_SHOOT_DISTANCE = 45;
     private CRServo windmill = null;
     private DcMotorEx shooter = null;
     public Shooter(HardwareMap hardwareMap) {
         windmill = hardwareMap.get(CRServo.class, "windmill");
         shooter = hardwareMap.get(DcMotorEx.class, "shooter");
+    }
+
+    public static double speedForDistance(double range) {
+        return 1250;
     }
 
     public void spinUp(){
@@ -38,4 +43,11 @@ public class Shooter {
         );
     }
 
+    public void setSpeed(double speed) {
+
+    }
+
+    public boolean isAtSpeed() {
+        return true;
+    }
 }

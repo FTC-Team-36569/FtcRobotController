@@ -57,7 +57,10 @@ public class Path1 extends BaseLinearOpMode {
                 //this is the pedro part
                 follow(follower, path1()),
                 follow(follower, path2()),
-                follow(follower, path3()),
+                race(
+                        waitMs(3000),
+                        follow(follower, path3())
+                ),
 //                race(follow(follower, path3()), waitMs(2000)),
                 follow(follower, path4()),
                 follow(follower, path5()),
