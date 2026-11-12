@@ -21,7 +21,13 @@ public class Shooter {
     }
 
     public static double speedForDistance(double range) {
-        return 1250;
+        if (range > 70) {
+            return 1315;
+        } else if (range > 60) {
+            return 1250;
+
+        }
+        return 1225;
     }
 
     public void spinUp(){

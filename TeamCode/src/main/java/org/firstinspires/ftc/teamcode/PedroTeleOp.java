@@ -42,7 +42,7 @@ public class PedroTeleOp extends OpMode {
     // How many degrees off is still "lined up" and OK to shoot
     public static double AIM_TOLERANCE = 3.0;
     // If shots always miss to one side, change this (degrees). Try 1 or -1 first.
-    public static double AIM_OFFSET = 2.0;
+    public static double AIM_OFFSET = 4.0;
 
 
     @Override
@@ -93,13 +93,19 @@ public class PedroTeleOp extends OpMode {
                 double aimError = target.ftcPose.bearing + AIM_OFFSET;
                 double distance = target.ftcPose.range;
                 turn = Range.clip(aimError * TURN_GAIN, -MAX_AIM_TURN, MAX_AIM_TURN);
+                if (turn < 0 && turn > -0.1) {
+                    turn = 0.1;
+                }
+                if (turn < 0.1 && turn > 0) {
+                    turn = 0.1;
+                }
                 shooter.setSpeed(Shooter.speedForDistance(distance));
                 readyToShoot = linedUp && atSpeed && farEnough;
             }
         } else {
             shooter.spinUp();
         }
-
+        telemetry.addData("TurnPower", turn);
         DrivePowers powers = ManualDrive.fieldCentric(
                 -gamepad1.left_stick_y,
                 -gamepad1.left_stick_x,
@@ -113,14 +119,13 @@ public class PedroTeleOp extends OpMode {
         }
         telemetry.addData("right button",gamepad1.right_trigger);
         windmill.setPower((standardShoot || readyToShoot) ? -1.0 : 0.0);
-        intake.setPower(gamepad1.left_bumper ? 1.0 : -1.0);
+        intake.setPower(gamepad1.left_bumper ? -1.0 : 1.0);
 
         if (gamepad1.options) {
             follower.setPose(follower.pose().withHeading(0));
         }
 
         //this set power to the intakes
-        intake.setPower(1.0);
         intakeServoLeft.setPower(1.0);
         intakeServoRight.setPower(-1.0);
 
