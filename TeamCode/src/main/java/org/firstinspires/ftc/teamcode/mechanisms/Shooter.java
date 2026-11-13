@@ -15,6 +15,8 @@ public class Shooter {
     public static final double MIN_SHOOT_DISTANCE = 45;
     private CRServo windmill = null;
     private DcMotorEx shooter = null;
+
+    private double targetSpeed = 0;
     public Shooter(HardwareMap hardwareMap) {
         windmill = hardwareMap.get(CRServo.class, "windmill");
         shooter = hardwareMap.get(DcMotorEx.class, "shooter");
@@ -32,10 +34,12 @@ public class Shooter {
 
     public void spinUp(){
         shooter.setVelocity(1250);
+        targetSpeed = 1250;
     }
 
     public void stop(){
         shooter.setPower(0);
+        targetSpeed = 0;
 
     }
 
@@ -50,10 +54,18 @@ public class Shooter {
     }
 
     public void setSpeed(double speed) {
-
+        shooter.setVelocity(speed);
+        targetSpeed = speed;
     }
 
+    public double getSpeed(){
+        return shooter.getVelocity();
+    }
     public boolean isAtSpeed() {
-        return true;
+        if (targetSpeed > (getSpeed()-20) && targetSpeed < (getSpeed()+20)){
+            return true;
+        } else {
+            return  false;
+        }
     }
 }

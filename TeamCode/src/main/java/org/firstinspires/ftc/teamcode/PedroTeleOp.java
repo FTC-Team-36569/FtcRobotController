@@ -17,8 +17,8 @@ import org.firstinspires.ftc.teamcode.pedro.Constants;
 import org.firstinspires.ftc.teamcode.pedro.OpModeStorage;
 import org.firstinspires.ftc.vision.apriltag.AprilTagClusterDetection;
 
-@TeleOp(name = "Pedro TeleOp")
-public class PedroTeleOp extends OpMode {
+
+public abstract class PedroTeleOp extends OpMode {
 
     public static final double FORWARD = Math.toRadians(0);
     private CRServo windmill = null;
@@ -75,7 +75,7 @@ public class PedroTeleOp extends OpMode {
         atSpeed = shooter.isAtSpeed();
 
         webcam.update();
-        AprilTagClusterDetection target = webcam.getClosestCluster("BLUE");
+        AprilTagClusterDetection target = webcam.getClosestCluster(getTeamColor());
         if (target != null) {
             telemetry.addData("Target", target.metadata.name);
             telemetry.addData("Distance (in)", "%.1f", target.ftcPose.range);
@@ -86,6 +86,8 @@ public class PedroTeleOp extends OpMode {
         } else {
             telemetry.addData("Target", "NOT FOUND");
         }
+
+        telemetry.addData("Shooter Speed", shooter.getSpeed());
 
         if (smartShoot) {
             if (target != null){
@@ -138,6 +140,8 @@ public class PedroTeleOp extends OpMode {
         telemetry.addData("Robot Y", robotPose.y());
         telemetry.addData("Robot Heading", Math.toDegrees(robotPose.heading()));
     }
+
+    protected abstract String getTeamColor();
 
     @Override
     public void start() {
