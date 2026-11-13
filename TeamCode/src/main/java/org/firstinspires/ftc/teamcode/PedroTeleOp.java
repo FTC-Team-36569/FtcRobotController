@@ -42,8 +42,14 @@ public abstract class PedroTeleOp extends OpMode {
     // How many degrees off is still "lined up" and OK to shoot
     public static double AIM_TOLERANCE = 3.0;
     // If shots always miss to one side, change this (degrees). Try 1 or -1 first.
-    public static double AIM_OFFSET = 4.0;
 
+    public double getAimOffset() {
+        if (getTeamColor().startsWith("BLUE")){
+            return 4.0;
+        } else {
+            return 6.0;
+        }
+    }
 
     @Override
     public void init() {
@@ -79,9 +85,9 @@ public abstract class PedroTeleOp extends OpMode {
         if (target != null) {
             telemetry.addData("Target", target.metadata.name);
             telemetry.addData("Distance (in)", "%.1f", target.ftcPose.range);
-            telemetry.addData("Aim error (deg)", "%.1f", target.ftcPose.bearing + AIM_OFFSET);
+            telemetry.addData("Aim error (deg)", "%.1f", target.ftcPose.bearing + getAimOffset());
             telemetry.addData("Speed for this distance", "%.0f", Shooter.speedForDistance(target.ftcPose.range));
-            linedUp = Math.abs(target.ftcPose.bearing + AIM_OFFSET) < AIM_TOLERANCE;
+            linedUp = Math.abs(target.ftcPose.bearing + getAimOffset()) < AIM_TOLERANCE;
             farEnough = target.ftcPose.range >= Shooter.MIN_SHOOT_DISTANCE;
         } else {
             telemetry.addData("Target", "NOT FOUND");
@@ -92,7 +98,7 @@ public abstract class PedroTeleOp extends OpMode {
         if (smartShoot) {
             if (target != null){
 
-                double aimError = target.ftcPose.bearing + AIM_OFFSET;
+                double aimError = target.ftcPose.bearing + getAimOffset();
                 double distance = target.ftcPose.range;
                 turn = Range.clip(aimError * TURN_GAIN, -MAX_AIM_TURN, MAX_AIM_TURN);
                 if (turn < 0 && turn > -0.1) {

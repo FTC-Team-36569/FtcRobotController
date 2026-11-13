@@ -42,7 +42,7 @@ public class Path2 extends BaseLinearOpMode {
     public Command autoRoutine() {
         return sequential(
                 //this is what we do once we start
-                waitMs(6000),
+                waitMs(10000),
                 //this is the shooting
                 shooter.shoot(),
                 shooter.shoot(),
